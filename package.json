@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"electron .\" \"cd src && npm start\""
+    "dev": "concurrently \"electron .\" \"cd ../../emr-cloud-fe && npm start\"",
+    "build": "concurrently \"electron .\" \"cd ../../emr-cloud-fe && npm run build && npx serve -s build\""
   },
   "keywords": [],
   "author": "",

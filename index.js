@@ -1,16 +1,36 @@
-const { app, BrowserWindow } = require('electron');
-const isDev = require('electron-is-dev');
+const { app, BrowserWindow, shell } = require("electron");
+const isDev = require("electron-is-dev");
+const path = require('path')
 
-const createWindow = () => {
+const createWindow = async () => {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      // preload: path.join(__dirname, 'preload.js')
+
+    },
   });
 
-  win.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, '../build/index.html')}`)
+  console.log({ BrowserWindow });
+
+  win.loadURL(
+    isDev
+      ? 'http://localhost:3000'
+      : `file://${path.join(__dirname, "../build/index.html")}`
+  );
+  win.webContents.openDevTools();
+
+  win.webContents.setWindowOpenHandler((details) => {
+    // shell.openExternal(details.url);
+
+    return {
+      action: "allow",
+    };
+  });
 };
 
 app.whenReady().then(createWindow);
